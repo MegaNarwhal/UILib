@@ -112,33 +112,4 @@ public class InventoryView implements View{
 	private static int roundUpToNine(int length){
 		return (int)Math.ceil((double)length / 9D) * 9;
 	}
-
-	public static class Builder implements ViewBuilder{
-		private String name;
-		private IComponent[] components;
-		private View superview;
-
-		@Override
-		public ViewBuilder setName(String name){
-			this.name = name;
-			return this;
-		}
-
-		@Override
-		public ViewBuilder setComponents(IComponent[] components){
-			this.components = components;
-			return this;
-		}
-
-		@Override
-		public ViewBuilder setSuperview(View superview){
-			this.superview = superview;
-			return this;
-		}
-
-		@Override
-		public View build(){
-			return new InventoryView(name,components,superview);
-		}
-	}
 }
