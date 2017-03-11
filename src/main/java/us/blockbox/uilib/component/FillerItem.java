@@ -4,9 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class FillerItem extends AbstractItem{
 	private static final String FILLER = "filler";
 
