@@ -1,0 +1,8 @@
+main: ${project.groupId}.UIPlugin
+name: ${project.artifactId}
+version: ${project.version}
+author: MegaNarwhal_
+description: Library for creating inventory GUIs.
+commands:
+  view:
+    description: "View test"
