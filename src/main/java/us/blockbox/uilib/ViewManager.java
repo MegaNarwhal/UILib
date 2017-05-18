@@ -31,14 +31,21 @@ public class ViewManager{
 
 	/**
 	 * Sets the player's current View, clearing any view history.
+	 *
 	 * @param p The Player whose View to set
 	 * @param v The View to set
 	 * @return The previous View, or null if the player did not have an open View
 	 */
 	public View setView(Player p,View v){
+		return setView(p,v,false);
+	}
+
+	public View setView(Player p,View v,boolean ignoreNext){
 		ViewHistory put = viewMap.put(p.getUniqueId(),new ViewHistory(new ArrayList<>(Collections.singletonList(v))));
 		View prev = (put == null ? null : put.current());
-		if(hasView(p)){
+		View view = getView(p);
+		System.out.println(view == null ? "null" : view.getName());
+		if(ignoreNext && hasView(p)){
 			ignoreNextClose(p);
 		}
 		openView(p,v);
@@ -46,8 +53,9 @@ public class ViewManager{
 	}
 
 	/**
-	 * Remove a Player's ViewHistory and ignore lock if present.
-	 * Care must be taken to close the Player's current View immediately after calling this method to avoid leakage of unprotected view contents.
+	 * Remove a Player's ViewHistory and ignore lock if present. Care must be taken to close the Player's current View
+	 * immediately after calling this method to avoid leakage of unprotected view contents.
+	 *
 	 * @param p The player to remove.
 	 * @return The Player's current view.
 	 * @see #closeView(Player)
@@ -123,7 +131,9 @@ public class ViewManager{
 	}
 
 	/**
-	 * Opens the superview of the player's current View if there is one. The opening will be done with a delay of one tick to avoid issues with InventoryCloseEvent.
+	 * Opens the superview of the player's current View if there is one. The opening will be done with a delay of one
+	 * tick to avoid issues with InventoryCloseEvent.
+	 *
 	 * @return True if the player's View had a superview and it was opened.
 	 */
 	public boolean openSuperview(Player p,boolean ignoreNext){
@@ -151,10 +161,15 @@ public class ViewManager{
 		return getViewHistory(p).getPrevious();
 	}
 
-	public boolean closeView(Player p){
+	public boolean closeView(final Player p){
 		if(hasView(p)){
-			p.closeInventory();
-			exit(p);
+			new BukkitRunnable(){
+				@Override
+				public void run(){
+					p.closeInventory();
+					exit(p);
+				}
+			}.runTaskLater(plugin,1L);
 			return true;
 		}
 		return false;

@@ -77,7 +77,7 @@ public class PageChangerImpl implements PageChanger{
 		if(onClick != null){
 			onClick.accept(viewer);
 		}
-		viewManager.setView(viewer,link);
+		viewManager.setView(viewer,link,true);
 		return true;
 	}
 
