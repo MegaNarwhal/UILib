@@ -3,7 +3,7 @@ package us.blockbox.uilib.component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import us.blockbox.uilib.Consumer;
 import us.blockbox.uilib.UIPlugin;
 import us.blockbox.uilib.ViewManager;
 import us.blockbox.uilib.view.View;
@@ -14,6 +14,7 @@ public class PageChangerImpl implements PageChanger{
 	private final String id;
 	private final String description;
 	private final ItemStack stack;
+	private final Consumer<Player> onClick;
 	private View link;
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack){
@@ -21,6 +22,7 @@ public class PageChangerImpl implements PageChanger{
 		this.id = id;
 		this.description = description;
 		this.stack = stack;
+		onClick = null;
 	}
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack,View link){
@@ -28,6 +30,24 @@ public class PageChangerImpl implements PageChanger{
 		this.id = id;
 		this.description = description;
 		this.stack = stack;
+		this.link = link;
+		onClick = null;
+	}
+
+	public PageChangerImpl(String name,String id,String description,ItemStack stack,Consumer<Player> onClick){
+		this.name = name;
+		this.id = id;
+		this.description = description;
+		this.stack = stack;
+		this.onClick = onClick;
+	}
+
+	public PageChangerImpl(String name,String id,String description,ItemStack stack,Consumer<Player> onClick,View link){
+		this.name = name;
+		this.id = id;
+		this.description = description;
+		this.stack = stack;
+		this.onClick = onClick;
 		this.link = link;
 	}
 
@@ -52,8 +72,11 @@ public class PageChangerImpl implements PageChanger{
 	}
 
 	@Override
-	public boolean select(final Player viewer,ClickType clickType){
+	public boolean select(Player viewer,ClickType clickType){
 		if(link == null) return false;
+		if(onClick != null){
+			onClick.accept(viewer);
+		}
 		viewManager.setView(viewer,link);
 		return true;
 	}
