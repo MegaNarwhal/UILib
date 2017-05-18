@@ -19,17 +19,17 @@ public class TestViewCommand implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender,Command command,String label,String[] args){
-		IItem filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
-//		IItem shopItem = new ShopItem("Test ShopItem","test1",ipsum,new ItemStack(Material.DIAMOND_PICKAXE),10.0,1.0);
+		Item filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
+//		Item shopItem = new ShopItem("Test ShopItem","test1",ipsum,new ItemStack(Material.DIAMOND_PICKAXE),10.0,1.0);
 		CloseButtonItem close = new CloseButtonItem("Close","close",new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)2));
-		IComponent[] subc = new IComponent[18];
+		Component[] subc = new Component[18];
 		for(int i = 0;i < subc.length - 1;i++){
 			subc[i] = FillerItem.create(new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]));
 		}
 		subc[17] = close;
 		View sub = InventoryView.padVertically("Sub",1,subc);
-		ICategory cat = new ConcreteCategory("Sub","sub",null,new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5),sub);
-		IComponent[] superc = new IComponent[]{filler,cat,close,new CommandItem("Command","cmd",new ItemStack(Material.COMMAND),"tp 0 70 0"),filler};
+		Category cat = new CategoryImpl("Sub","sub",null,new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5),sub);
+		Component[] superc = new Component[]{filler,cat,close,new CommandItem("Command","cmd",new ItemStack(Material.COMMAND),"tp 0 70 0"),filler};
 		View superv = InventoryView.createCentered("Super",superc);
 		viewManager.setView(((Player)sender),superv);
 //		viewManager.descendView(((Player)sender),superv);

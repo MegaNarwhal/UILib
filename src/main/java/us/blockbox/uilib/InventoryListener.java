@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
-import us.blockbox.uilib.component.IComponent;
+import us.blockbox.uilib.component.Component;
 import us.blockbox.uilib.event.ViewPreInteractEvent;
 import us.blockbox.uilib.view.View;
 
@@ -39,7 +39,7 @@ public class InventoryListener implements Listener{
 		View view = viewManager.getView(p);
 		if(view != null && isView(view,e.getInventory())){
 			e.setCancelled(true);
-			IComponent item = view.getItem(raw);
+			Component item = view.getItem(raw);
 			if(item != null){
 				ViewPreInteractEvent preInteract = new ViewPreInteractEvent(p,view,raw);
 				Bukkit.getPluginManager().callEvent(preInteract);

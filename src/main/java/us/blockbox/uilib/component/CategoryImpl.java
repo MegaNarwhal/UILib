@@ -7,7 +7,7 @@ import us.blockbox.uilib.UIPlugin;
 import us.blockbox.uilib.view.View;
 import us.blockbox.uilib.ViewManager;
 
-public class ConcreteCategory implements ICategory{
+public class CategoryImpl implements Category{
 	private static final ViewManager viewManager = UIPlugin.getViewManager();
 	private String name;
 	private String id;
@@ -15,7 +15,7 @@ public class ConcreteCategory implements ICategory{
 	private ItemStack stack;
 	private View viewSub;
 
-	public ConcreteCategory(String name,String id,String description,ItemStack stack,View viewSub){
+	public CategoryImpl(String name,String id,String description,ItemStack stack,View viewSub){
 		this.name = name;
 		this.id = id;
 		this.description = description;
@@ -92,8 +92,8 @@ public class ConcreteCategory implements ICategory{
 			return this;
 		}
 
-		public ConcreteCategory build(){
-			return new ConcreteCategory(name,id,description,stack,subview);
+		public CategoryImpl build(){
+			return new CategoryImpl(name,id,description,stack,subview);
 		}
 	}
 }

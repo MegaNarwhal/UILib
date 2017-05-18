@@ -38,6 +38,9 @@ public class ViewManager{
 	public View setView(Player p,View v){
 		ViewHistory put = viewMap.put(p.getUniqueId(),new ViewHistory(new ArrayList<>(Collections.singletonList(v))));
 		View prev = (put == null ? null : put.current());
+		if(hasView(p)){
+			ignoreNextClose(p);
+		}
 		openView(p,v);
 		return prev;
 	}

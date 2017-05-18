@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractItem implements IItem{
+public abstract class AbstractItem implements Item{
 	private final String name;
 	private final String id;
 	private final String description;

@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-public interface IItem extends IComponent{
+public interface Item extends Component{
 	@Override
 	boolean select(Player viewer,ClickType clickType);
 
