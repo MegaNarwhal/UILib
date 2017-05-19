@@ -43,8 +43,6 @@ public class ViewManager{
 	public View setView(Player p,View v,boolean ignoreNext){
 		ViewHistory put = viewMap.put(p.getUniqueId(),new ViewHistory(new ArrayList<>(Collections.singletonList(v))));
 		View prev = (put == null ? null : put.current());
-		View view = getView(p);
-		System.out.println(view == null ? "null" : view.getName());
 		if(ignoreNext && hasView(p)){
 			ignoreNextClose(p);
 		}

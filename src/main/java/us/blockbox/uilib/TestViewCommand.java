@@ -19,6 +19,7 @@ public class TestViewCommand implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender,Command command,String label,String[] args){
+		if(!sender.isOp()) return true;
 		Item filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
 //		Item shopItem = new ShopItem("Test ShopItem","test1",ipsum,new ItemStack(Material.DIAMOND_PICKAXE),10.0,1.0);
 		CloseButtonItem close = new CloseButtonItem("Close","close",new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)2));
