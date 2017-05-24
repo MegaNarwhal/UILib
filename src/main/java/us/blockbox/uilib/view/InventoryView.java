@@ -1,5 +1,6 @@
 package us.blockbox.uilib.view;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,32 +26,28 @@ import java.util.List;
 public class InventoryView implements View{//todo remove viewSuper
 	private final String name;
 	private final Component[] components;
-	private View viewSuper;
-
-	public InventoryView(String name){
-		this(name,new Component[9]);
-	}
 
 	public InventoryView(String name,Component[] components){
-		this(name,components,null);
-	}
-
-	public InventoryView(String name,Component[] components,View viewSuper){
+		Validate.notNull(name);
+		Validate.notNull(components);
 		this.name = name;
-		if(components == null){
-			throw new IllegalArgumentException("Component array cannot be null");
-		}
 		if((components.length % 9) != 0){
 			throw new IllegalArgumentException("Component array length must be a multiple of 9");
 		}
 		this.components = Arrays.copyOf(components,components.length);
-		this.viewSuper = viewSuper;
+	}
+
+	@Override
+	public Component set(int i,Component component){
+		Component old = components[i];
+		components[i] = component;
+		return old;
 	}
 
 	/**
 	 * @since 0.0.2
 	 */
-	public static View createPaginated(String name,Component[] components,int pageRows){ //todo
+	public static View createPaginated(String name,Component[] components,int pageRows){
 //		int roundedSize = InventoryView.roundUpToNine(components.length);
 		int pageSize = pageRows * 9;
 		int pages = (int)Math.ceil(components.length / ((double)pageSize));
@@ -112,36 +109,8 @@ public class InventoryView implements View{//todo remove viewSuper
 			viewPrev = view;
 		}
 		//return first view
-//		System.out.println("Created paginated view with " + views.size() + " pages");
 		return views.get(0);
 	}
-
-//		while(true){
-//			int iSrc = 0;
-//			int iDest = 0;
-//			Component[] pageComponents = new Component[InventoryView.roundUpToNine(pageSize)];
-//			if(pageNum > 0){
-//				//insert pagechanger
-//				iDest++;
-//			}
-//			if(pageNum < pages){
-//				iDest++;
-//			}
-//			while(iSrc < pageSize && iDest < ){
-//				Component c = components[iSrc];
-//				pageComponents[iDest] = c;
-//				iDest++;
-//				iSrc++;
-//			}
-//			if(pageNum < pages){
-//				//insert pagechanger
-//			}
-//			if(pageNum < pages){
-//				pageNum++;
-//			}else{
-//				break;
-//			}
-//		}
 
 	public static View create(String name,Component[] components){
 		int size = InventoryView.roundUpToNine(components.length);
@@ -217,5 +186,24 @@ public class InventoryView implements View{//todo remove viewSuper
 
 	private static int roundUpToNine(int length){
 		return (int)Math.ceil((double)length / 9D) * 9;
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+
+		InventoryView that = (InventoryView)o;
+
+		if(!name.equals(that.name)) return false;
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
+		return Arrays.equals(components,that.components);
+	}
+
+	@Override
+	public int hashCode(){
+		int result = name.hashCode();
+		result = 31 * result + Arrays.hashCode(components);
+		return result;
 	}
 }

@@ -16,4 +16,11 @@ public interface View{
 	Inventory asInventory();
 
 	int size();
+
+	/**
+	 * @param i         The index to set
+	 * @param component The new Component to set at this index
+	 * @return The previous Component at this index, possibly null
+	 */
+	Component set(int i,Component component);
 }
