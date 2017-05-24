@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.blockbox.uilib.Consumer;
-import us.blockbox.uilib.ItemUtils;
+import us.blockbox.uilib.ItemBuilder;
 import us.blockbox.uilib.component.Component;
 import us.blockbox.uilib.component.PageChanger;
 import us.blockbox.uilib.component.PageChangerImpl;
@@ -74,10 +74,10 @@ public class InventoryView implements View{//todo remove viewSuper
 				int currentPage = pageNum + 1;
 				if(currentPage > 1 && i == 0){//if this isn't the first page, insert a link to previous page as first item.
 //					System.out.println("Inserting previous page link");
-					c = new PageChangerImpl("Previous Page","pageprev",null,ItemUtils.nameStack(new ItemStack(Material.ARROW),ChatColor.GREEN + "Previous Page"),onClick);
+					c = new PageChangerImpl("Previous Page","pageprev",null,new ItemBuilder(new ItemStack(Material.ARROW)).name(ChatColor.GREEN + "Previous Page").build(),onClick);
 				}else if(currentPage < pages && i == pageSize - 1){//if this isn't the last page, insert a link to next page as the last item.
 //					System.out.println("Inserting next page link");
-					c = new PageChangerImpl("Next Page","pagenext",null,ItemUtils.nameStack(new ItemStack(Material.ARROW),ChatColor.GREEN + "Next Page"),onClick);
+					c = new PageChangerImpl("Next Page","pagenext",null,new ItemBuilder(new ItemStack(Material.ARROW)).name(ChatColor.GREEN + "Next Page").build(),onClick);
 				}else{
 					c = components[isrc];
 					isrc++;

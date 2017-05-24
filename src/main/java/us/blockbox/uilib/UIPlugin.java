@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class UIPlugin extends JavaPlugin{
 
-	private static JavaPlugin plugin;
+	private static UIPlugin plugin;
 	private static ViewManager viewManager;
 
 	@Override
@@ -25,7 +25,7 @@ public class UIPlugin extends JavaPlugin{
 		viewManager.closeAll();
 	}
 
-	public static JavaPlugin getPlugin(){
+	public static UIPlugin getPlugin(){
 		return plugin;
 	}
 
