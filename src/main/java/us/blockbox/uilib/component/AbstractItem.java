@@ -13,17 +13,14 @@ public abstract class AbstractItem implements Item{
 	private final ItemStack stack;
 
 	public AbstractItem(String name,String id,ItemStack stack){
-		this.name = name;
-		this.id = id;
-		this.stack = stack;
-		this.description = null;
+		this(name,id,null,stack);
 	}
 
 	public AbstractItem(String name,String id,String description,ItemStack stack){
 		this.name = name;
 		this.id = id;
 		this.description = description;
-		this.stack = stack;
+		this.stack = stack.clone();
 	}
 
 /*	public AbstractItem(Map<String,Object> map){
