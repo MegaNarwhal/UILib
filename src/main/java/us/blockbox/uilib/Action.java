@@ -1,5 +1,5 @@
 package us.blockbox.uilib;
 
-public interface IAction<T>{
+public interface Action<T>{
 	boolean act(T t);
 }

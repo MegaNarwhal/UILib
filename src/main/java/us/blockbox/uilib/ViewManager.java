@@ -1,6 +1,6 @@
 package us.blockbox.uilib;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -13,24 +13,53 @@ import java.util.*;
  * Manages each Player's current View. This may become inconsistent if there are multiple ViewManagers.
  */
 public class ViewManager{
-	private final Map<UUID,ViewHistory> viewMap = new HashMap<>();
+	private final Map<UUID,ViewHistoryMutable> viewMap = new HashMap<>();
 	private final JavaPlugin plugin;
 	private final Set<UUID> ignored = new HashSet<>();
 
-	public ViewManager(JavaPlugin plugin){
+	ViewManager(JavaPlugin plugin){
 		this.plugin = plugin;
 	}
 
 	public View getView(Player p){
-		return getViewHistory(p).current();
+		return getView(p.getUniqueId());
+	}
+
+	public View getView(UUID uuid){
+		return getMutableViewHistory(uuid).current();
 	}
 
 	public boolean hasView(Player p){
-		return getView(p) != null;
+		return hasView(p.getUniqueId());
+	}
+
+	public boolean hasView(UUID uuid){
+		return getView(uuid) != null;
+	}
+
+	public Set<UUID> getViewers(String name){
+		Set<UUID> viewers = new HashSet<>();
+		for(Map.Entry<UUID,ViewHistoryMutable> e : viewMap.entrySet()){
+			View current = e.getValue().current();
+			if(current != null && current.getName().equals(name)){
+				viewers.add(e.getKey());
+			}
+		}
+		return viewers;
+	}
+
+	public Set<UUID> getViewers(View view){
+		Set<UUID> viewers = new HashSet<>();
+		for(Map.Entry<UUID,ViewHistoryMutable> e : viewMap.entrySet()){
+			if(e.getValue().current().equals(view)){
+				viewers.add(e.getKey());
+			}
+		}
+		return viewers;
 	}
 
 	/**
-	 * Sets the player's current View, clearing any view history.
+	 * Sets the player's current {@link View}, clearing any view history.
 	 *
 	 * @param p The Player whose View to set
 	 * @param v The View to set
@@ -40,11 +69,43 @@ public class ViewManager{
 		return setView(p,v,false);
 	}
 
-	public View setView(Player p,View v,boolean ignoreNext){
-		ViewHistory put = viewMap.put(p.getUniqueId(),new ViewHistory(new ArrayList<>(Collections.singletonList(v))));
-		View prev = (put == null ? null : put.current());
+	public View setView(Player p,View v,boolean ignoreNext){ //todo option to preserve history and just change current view
+		return setView(p,v,ignoreNext,false);
+	}
+
+	/**
+	 * Sets the Player's current {@link View} without adding to their {@link ViewHistory}.
+	 *
+	 * @param p               The Player whose View to set
+	 * @param v               The View to set
+	 * @param ignoreNext      If the next InventoryCloseEvent should be ignored. This avoids opening the superview when
+	 *                        switching Views.
+	 * @param preserveHistory If the Player's {@link ViewHistory} should be preserved if there is any. This is useful
+	 *                        for paginated subviews.
+	 * @return The previous View, or null if the player did not have an open View
+	 */
+	public View setView(Player p,View v,boolean ignoreNext,boolean preserveHistory){
+		UUID uuid = p.getUniqueId();
+		ViewHistoryMutable put;
+		if(preserveHistory){//todo make this cleaner
+			put = viewMap.get(uuid);
+		}else{
+			put = viewMap.put(uuid,new ViewHistoryMutableImpl(new ArrayList<>(Collections.singletonList(v))));
+		}
+		View prev;
+		if(put == null){
+			prev = null;
+			if(preserveHistory){
+				viewMap.put(uuid,new ViewHistoryMutableImpl(new ArrayList<>(Collections.singletonList(v))));
+			}
+		}else{
+			prev = put.current();
+			if(preserveHistory){
+				put.setCurrent(v);
+			}
+		}
 		if(ignoreNext && hasView(p)){
-			ignoreNextClose(p);
+			ignoreNextClose(uuid);
 		}
 		openView(p,v);
 		return prev;
@@ -58,9 +119,10 @@ public class ViewManager{
 	 * @return The Player's current view.
 	 * @see #closeView(Player)
 	 */
-	public View exit(Player p){
-		ViewHistory remove = viewMap.remove(p.getUniqueId());
-		removeIgnore(p);
+	View exit(Player p){
+		UUID uuid = p.getUniqueId();
+		ViewHistory remove = viewMap.remove(uuid);
+		removeIgnore(uuid);
 //		System.out.println("Clearing view history for " + p.getName());
 		if(remove == null){
 			return null;
@@ -68,78 +130,73 @@ public class ViewManager{
 		return remove.current();
 	}
 
-	private ViewHistory getViewHistory(Player p){
-		UUID id = p.getUniqueId();
-		if(viewMap.containsKey(id)){
-			return viewMap.get(id);
+	private ViewHistoryMutable getMutableViewHistory(UUID uuid){
+		if(viewMap.containsKey(uuid)){
+			return viewMap.get(uuid);
 		}else{
-			ViewHistory value = new ViewHistory();
-			viewMap.put(id,value);
+			ViewHistoryMutable value = new ViewHistoryMutableImpl(); //todo avoid creating a history if possible
+			viewMap.put(uuid,value);
 			return value;
 		}
 	}
 
-	private void ignoreNextClose(Player p){
+	private void ignoreNextClose(UUID uuid){
 //		System.out.println("Will ignore next close");
-		ignored.add(p.getUniqueId());
+		ignored.add(uuid);
 	}
 
-	private void removeIgnore(Player p){
-		ignored.remove(p.getUniqueId());
+	private void removeIgnore(UUID uuid){
+		ignored.remove(uuid);
 	}
 
-	private boolean isIgnored(Player p){
-		if(ignored.contains(p.getUniqueId())){
-//			System.out.println("Ignoring close");
-			return true;
-		}
-		return false;
+	private boolean isIgnored(UUID uuid){
+		return ignored.contains(uuid);
 	}
 
+	/**
+	 * Open a new {@link View}, appending it to the head of the Player's {@link ViewHistory}.
+	 *
+	 * @param p The Player whose View to set
+	 * @param v The View to set
+	 * @return True if the Player's View was set, false otherwise.
+	 * @see #setView(Player,View)
+	 */
 	public boolean descendView(Player p,View v){
 		if(v == null){
 			return false;
 		}
-		ViewHistory h = getViewHistory(p);
+		UUID uuid = p.getUniqueId();
+		ViewHistoryMutable h = getMutableViewHistory(uuid);
 		View prev = h.current();
 		if(prev != null){
-			ignoreNextClose(p);
+			ignoreNextClose(uuid);
 		}
 		openView(p,v);
 		h.add(v);
-		Bukkit.getPluginManager().callEvent(new ViewChangeEvent(p,prev,v));
+		plugin.getServer().getPluginManager().callEvent(new ViewChangeEvent(p,prev,v));
 		return true;
 	}
 
 	void openView(Player p,View v){
 		if(v == null){
-			removeIgnore(p); //todo is this enough to prevent ignoring closes that shouldn't be and still ignoring ones that should be?
+			removeIgnore(p.getUniqueId()); //todo is this enough to prevent ignoring closes that shouldn't be and still ignoring ones that should be?
 		}else{
 			p.openInventory(v.asInventory());
 		}
 	}
 
-	private void delay(final Player p,final IAction<Player> action,long ticks){ //todo don't schedule task if no delay?
-		new BukkitRunnable(){
-			@Override
-			public void run(){
-				action.act(p);
-			}
-		}.runTaskLater(plugin,ticks);
-	}
-
 	/**
-	 * Opens the superview of the player's current View if there is one. The opening will be done with a delay of one
-	 * tick to avoid issues with InventoryCloseEvent.
+	 * Opens the superview of the player's current View if there is one.
 	 *
 	 * @return True if the player's View had a superview and it was opened.
 	 */
 	public boolean openSuperview(Player p,boolean ignoreNext){
-		if(isIgnored(p)){
-			removeIgnore(p);
+		UUID uuid = p.getUniqueId();
+		if(isIgnored(uuid)){
+			removeIgnore(uuid);
 			return false;
 		}
-		ViewHistory h = getViewHistory(p);
+		ViewHistoryMutable h = getMutableViewHistory(uuid);
 		if(h.getPrevious() == null){
 //			System.out.println("history is empty, closing.");
 			closeView(p);
@@ -148,15 +205,21 @@ public class ViewManager{
 			View back = h.back();
 			//openView causes an InventoryCloseEvent that should be ignored in cases of a player clicking in the gui
 			if(ignoreNext){
-				ignoreNextClose(p);
+				ignoreNextClose(uuid);
 			}
 			openView(p,back);
 			return true;
 		}
 	}
 
+	public ViewHistory getViewHistory(UUID uuid){
+		ViewHistoryMutable h = getMutableViewHistory(uuid);
+		if(h == null) return null;
+		return new ViewHistoryImpl(h);
+	}
+
 	public View getPreviousView(Player p){
-		return getViewHistory(p).getPrevious();
+		return getMutableViewHistory(p.getUniqueId()).getPrevious();
 	}
 
 	public boolean closeView(final Player p){
@@ -173,10 +236,10 @@ public class ViewManager{
 		return false;
 	}
 
-
 	public void closeAll(){
+		Server server = plugin.getServer();
 		for(UUID id : viewMap.keySet()){
-			Player p = Bukkit.getPlayer(id);
+			Player p = server.getPlayer(id);
 			if(p != null){
 				p.closeInventory();
 			}
