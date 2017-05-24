@@ -17,7 +17,7 @@ public class UIPlugin extends JavaPlugin{
 		}
 		getCommand("view").setExecutor(new TestViewCommand());
 //		ConfigurationSerialization.registerClass(AbstractItem.class);
-		getServer().getPluginManager().registerEvents(new InventoryListener(),this);
+		getServer().getPluginManager().registerEvents(new InventoryListener(viewManager),this);
 	}
 
 	@Override

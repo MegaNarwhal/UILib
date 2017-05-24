@@ -22,7 +22,11 @@ import java.util.Set;
 
 public class InventoryListener implements Listener{
 
-	private static final ViewManager viewManager = UIPlugin.getViewManager();
+	private final ViewManager viewManager;
+
+	public InventoryListener(ViewManager viewManager){
+		this.viewManager = viewManager;
+	}
 
 	@EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
 	public void onClick(InventoryClickEvent e){
