@@ -21,4 +21,8 @@ public class CommandItem extends AbstractItem{
 	public boolean select(Player viewer,ClickType clickType){
 		return viewer.performCommand(command);
 	}
+
+	public String getCommand(){
+		return command;
+	}
 }
