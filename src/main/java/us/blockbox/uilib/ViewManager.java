@@ -26,7 +26,8 @@ public class ViewManager{
 	}
 
 	public View getView(UUID uuid){
-		return getMutableViewHistory(uuid).current();
+		ViewHistoryMutable h = viewMap.get(uuid);
+		return h == null ? null : h.current();
 	}
 
 	public boolean hasView(Player p){
@@ -38,7 +39,7 @@ public class ViewManager{
 	}
 
 	public Set<UUID> getViewers(String name){
-		Set<UUID> viewers = new HashSet<>();
+		Set<UUID> viewers = new HashSet<>(getInitialCapacity());
 		for(Map.Entry<UUID,ViewHistoryMutable> e : viewMap.entrySet()){
 			View current = e.getValue().current();
 			if(current != null && current.getName().equals(name)){
@@ -48,8 +49,12 @@ public class ViewManager{
 		return viewers;
 	}
 
+	private int getInitialCapacity(){
+		return Math.max(16,viewMap.size() / 2);
+	}
+
 	public Set<UUID> getViewers(View view){
-		Set<UUID> viewers = new HashSet<>();
+		Set<UUID> viewers = new HashSet<>(getInitialCapacity());
 		for(Map.Entry<UUID,ViewHistoryMutable> e : viewMap.entrySet()){
 			if(e.getValue().current().equals(view)){
 				viewers.add(e.getKey());
@@ -130,14 +135,14 @@ public class ViewManager{
 		return remove.current();
 	}
 
-	private ViewHistoryMutable getMutableViewHistory(UUID uuid){
-		if(viewMap.containsKey(uuid)){
-			return viewMap.get(uuid);
-		}else{
-			ViewHistoryMutable value = new ViewHistoryMutableImpl(); //todo avoid creating a history if possible
+	private ViewHistoryMutable getHistoryAndCreateIfAbsent(UUID uuid){
+		ViewHistoryMutable h = viewMap.get(uuid);
+		if(h == null){
+			ViewHistoryMutable value = new ViewHistoryMutableImpl(); //todo any spots where creating history can be avoided?
 			viewMap.put(uuid,value);
 			return value;
 		}
+		return h;
 	}
 
 	private void ignoreNextClose(UUID uuid){
@@ -166,7 +171,7 @@ public class ViewManager{
 			return false;
 		}
 		UUID uuid = p.getUniqueId();
-		ViewHistoryMutable h = getMutableViewHistory(uuid);
+		ViewHistoryMutable h = getHistoryAndCreateIfAbsent(uuid);
 		View prev = h.current();
 		if(prev != null){
 			ignoreNextClose(uuid);
@@ -196,8 +201,9 @@ public class ViewManager{
 			removeIgnore(uuid);
 			return false;
 		}
-		ViewHistoryMutable h = getMutableViewHistory(uuid);
-		if(h.getPrevious() == null){
+//		ViewHistoryMutable h = getHistoryAndCreateIfAbsent(uuid);
+		ViewHistoryMutable h = viewMap.get(uuid);
+		if(h == null || h.getPrevious() == null){
 //			System.out.println("history is empty, closing.");
 			closeView(p);
 			return false;
@@ -213,13 +219,13 @@ public class ViewManager{
 	}
 
 	public ViewHistory getViewHistory(UUID uuid){
-		ViewHistoryMutable h = getMutableViewHistory(uuid);
-		if(h == null) return null;
-		return new ViewHistoryImpl(h);
+		ViewHistoryMutable h = viewMap.get(uuid);
+		return h == null ? null : new ViewHistoryImpl(h);
 	}
 
 	public View getPreviousView(Player p){
-		return getMutableViewHistory(p.getUniqueId()).getPrevious();
+		ViewHistoryMutable h = viewMap.get(p.getUniqueId());
+		return h == null ? null : h.getPrevious();
 	}
 
 	public boolean closeView(final Player p){
