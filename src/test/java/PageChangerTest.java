@@ -65,6 +65,7 @@ public class PageChangerTest{
 				Component item = view.getItem(i);
 				if(item instanceof PageChanger){
 					View link = ((PageChanger)item).getLink();
+					assertNotNull(link);
 					if(!visited.contains(link)){
 						assertTrue(item.select(p,ClickType.LEFT));
 						visited.add(link);
