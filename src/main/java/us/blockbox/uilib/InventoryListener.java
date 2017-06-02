@@ -22,26 +22,31 @@ import java.util.Set;
 
 public class InventoryListener implements Listener{
 
-	private final ViewManager viewManager;
+	private final UIPlugin plugin;
+	private final ViewManagerImpl viewManager;
 
-	public InventoryListener(ViewManager viewManager){
+	public InventoryListener(UIPlugin plugin,ViewManagerImpl viewManager){
+		this.plugin = plugin;
 		this.viewManager = viewManager;
 	}
 
-	@EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onClick(InventoryClickEvent e){
-		if(!(e.getWhoClicked() instanceof Player)) return;
+		if(!(e.getWhoClicked() instanceof Player)){
+			System.out.println("Clicker was not player!");
+			return;
+		}
 		int raw = e.getRawSlot();
 		int ui = e.getView().getTopInventory().getSize();
 		Player p = (Player)e.getWhoClicked();
-		if(e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && viewManager.hasView(p)){
+		View view = viewManager.getView(p);
+		if(e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && view != null){
 			e.setCancelled(true);
 		}
 		if(!inView(raw,ui)){
 			return;
 		}
-		View view = viewManager.getView(p);
-		if(view != null && isView(view,e.getInventory())){
+		if(view != null && isView(view,e.getInventory())){//todo handle in view itself?
 			e.setCancelled(true);
 			Component item = view.getItem(raw);
 			if(item != null){
@@ -54,7 +59,7 @@ public class InventoryListener implements Listener{
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onDrag(InventoryDragEvent e){
 		if(!(e.getWhoClicked() instanceof Player)) return;
 		Set<Integer> slots = e.getRawSlots();
@@ -76,7 +81,7 @@ public class InventoryListener implements Listener{
 		return rawSlot >= 0 && rawSlot < viewSlots;
 	}
 
-	private boolean isView(View view,Inventory inventory){
+	private static boolean isView(View view,Inventory inventory){
 		return view.getName().equals(inventory.getName());
 	}
 
@@ -90,7 +95,7 @@ public class InventoryListener implements Listener{
 				public void run(){
 					viewManager.openSuperview(p,false); //Do not ignore the next close event
 				}
-			}.runTaskLater(UIPlugin.getPlugin(),1L);
+			}.runTaskLater(plugin,1L);
 		}
 	}
 
@@ -99,7 +104,7 @@ public class InventoryListener implements Listener{
 		viewManager.exit(e.getPlayer());
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onTeleport(PlayerTeleportEvent e){
 		viewManager.closeView(e.getPlayer());
 	}
