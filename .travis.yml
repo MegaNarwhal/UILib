@@ -1,3 +1,2 @@
 language: java
-after_failure:
-  - cat target/surefire-reports/*.txt
+script: mvn test -B -V -e
