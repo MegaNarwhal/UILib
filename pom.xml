@@ -30,10 +30,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-<!--        <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>-->
+        <!--<repository>-->
+            <!--<id>vault-repo</id>-->
+            <!--<url>http://nexus.hc.to/content/repositories/pub_releases</url>-->
+        <!--</repository>-->
     </repositories>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -55,6 +55,7 @@
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
+                    <trimStackTrace>false</trimStackTrace>
                 </configuration>
                 <dependencies>
                     <dependency>
