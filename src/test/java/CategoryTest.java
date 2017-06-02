@@ -38,7 +38,8 @@ public class CategoryTest{
 		Assert.assertNotNull(viewManager);
 		View current = viewManager.getView(p);
 		Assert.assertNull(current);
-		Assert.assertTrue(c.select(p,ClickType.LEFT));
+//		Assert.assertTrue(c.select(p,ClickType.LEFT));
+		c.select(p,ClickType.LEFT);
 		View category = viewManager.getView(p);
 		Assert.assertEquals(subView,category);
 	}
