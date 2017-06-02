@@ -67,8 +67,7 @@ public class PageChangerTest{
 					View link = ((PageChanger)item).getLink();
 					assertNotNull(link);
 					if(!visited.contains(link)){
-//						assertTrue(item.select(p,ClickType.LEFT));
-						item.select(p,ClickType.LEFT);
+						assertTrue(item.select(p,ClickType.LEFT));
 						visited.add(link);
 						view = viewManager.getView(p);
 						traversals++;
