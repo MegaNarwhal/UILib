@@ -31,12 +31,11 @@ public class WordWrapper{
 		StringBuilder b = new StringBuilder(lineMaxLength);
 		int initialLength = b.length();
 		int c = 0;
-		while(i < split.length){
+		int splitLength = split.length;
+		while(i < splitLength){
 			String word = split[i];
-			i++;
-			b.append(word);
-			c += word.length()/* + 1*/;//todo is this right?
-			if(c >= lineMaxLength){
+			int length = word.length();
+			if(c + length >= lineMaxLength){
 				String line = b.toString();
 				lines.add(line);
 				b = new StringBuilder(lineMaxLength);
@@ -44,8 +43,13 @@ public class WordWrapper{
 				initialLength = b.length();
 				c = 0;
 			}else{
-				b.append(" ");
-				c += 1;
+				i++;
+				b.append(word);
+				c += length;
+				if(i < splitLength && c + 1 < lineMaxLength){
+					b.append(' ');
+					c += 1;
+				}
 			}
 		}
 		if(b.length() > initialLength){
