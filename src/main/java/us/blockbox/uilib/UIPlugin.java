@@ -21,7 +21,7 @@ public class UIPlugin extends JavaPlugin{
 
 	@Override
 	public void onDisable(){
-		ViewManagerFactory.getInstance().closeAll();
+		getViewManager().closeAll();
 	}
 
 	public static UIPlugin getPlugin(){

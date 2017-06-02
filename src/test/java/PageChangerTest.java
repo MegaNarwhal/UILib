@@ -22,11 +22,13 @@ import static org.junit.Assert.*;
 public class PageChangerTest{
 	@Before
 	public void setUp() throws Exception{
+		System.out.println("PAGECHANGER SETUP");
 		ViewManagerFactory.setInstance(new MockViewManager());
 	}
 
 	@After
 	public void tearDown() throws Exception{
+		System.out.println("PAGECHANGER TEARDOWN");
 		ViewManagerFactory.setInstance(null);
 	}
 

@@ -61,7 +61,6 @@ public class PageChangerImpl implements PageChanger{
 	@Override
 	public boolean select(Player viewer,ClickType clickType){
 		if(link == null) return false;
-		System.out.println(viewManager);
 		if(onClick != null){
 			onClick.accept(viewer);
 		}
