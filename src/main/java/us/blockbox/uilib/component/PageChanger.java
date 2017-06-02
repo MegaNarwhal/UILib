@@ -7,7 +7,7 @@ import us.blockbox.uilib.view.View;
  * {@link View} into multiple pages. This means a user can exit with a single action rather than being moved back in
  * their view history.
  */
-public interface PageChanger extends Component{
+public interface PageChanger extends Item{
 	/**
 	 * @return The {@link View} this PageChanger links to.
 	 */

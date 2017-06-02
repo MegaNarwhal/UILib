@@ -1,5 +1,6 @@
 package us.blockbox.uilib;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,13 +23,17 @@ public class TestViewCommand implements CommandExecutor{
 		if(!sender.isOp()) return true;
 		Item filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
 //		Item shopItem = new ShopItem("Test ShopItem","test1",ipsum,new ItemStack(Material.DIAMOND_PICKAXE),10.0,1.0);
-		CloseButtonItem close = new CloseButtonItem("Close","close",new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)2));
-		Component[] subc = new Component[18];
-		for(int i = 0;i < subc.length - 1;i++){
-			subc[i] = FillerItem.create(new ItemStack(Material.values()[new Random().nextInt(Material.values().length)]));
+		CloseButtonItem close = new CloseButtonItem("Close","close",new ItemBuilder(
+				new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)1)
+		).name(ChatColor.RED + "Close").build());
+		Component[] subc = new Component[23];
+		Random random = new Random();
+		for(int i = 0; i < subc.length - 1; i++){
+			subc[i] = FillerItem.create(new ItemStack(Material.values()[random.nextInt(Material.values().length)]));
 		}
-		subc[17] = close;
-		View sub = InventoryView.padVertically("Sub",1,subc);
+		subc[subc.length - 1] = close;//
+		View sub = InventoryView.createPaginated("Paginated View",subc,1);
+//		View sub = InventoryView.padVertically("Sub",1,subc);
 		Category cat = new CategoryImpl("Sub","sub",null,new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5),sub);
 		Component[] superc = new Component[]{filler,cat,close,new CommandItem("Command","cmd",new ItemStack(Material.COMMAND),"tp 0 70 0"),filler};
 		View superv = InventoryView.createCentered("Super",superc);

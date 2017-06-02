@@ -4,38 +4,33 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
+import us.blockbox.uilib.WordWrapper;
 
 public class ShopItem extends AbstractItem{
 	private final double priceBuy;
 	private final double priceSell;
 	private final ItemStack original;
 
-	public ShopItem(String name,String id,ItemStack stack,double priceBuy,double priceSell){
-		super(name,id,stack);
-		this.original = stack.clone();
-		this.priceBuy = priceBuy;
-		this.priceSell = priceSell;
-		setMeta(stack);
+	public static ShopItem create(String name,String id,String description,ItemStack stack,double priceBuy,double priceSell){
+		ItemStack stackWithMeta = stack.clone();
+		setMeta(stackWithMeta,description);
+		return new ShopItem(name,id,description,stack,stackWithMeta,priceBuy,priceSell);
 	}
 
-	public ShopItem(String name,String id,String description,ItemStack stack,double priceBuy,double priceSell){
-		super(name,id,description,stack);
-		this.original = stack.clone();
+	private ShopItem(String name,String id,String description,ItemStack icon,ItemStack original,double priceBuy,double priceSell){
+		super(name,id,description,icon);
+		this.original = original;
 		this.priceBuy = priceBuy;
 		this.priceSell = priceSell;
-		setMeta(stack);
 	}
 
-	private void setMeta(ItemStack stack){
+	private static void setMeta(ItemStack stack,String description){
+		if(description == null){
+			return;
+		}
 		ItemMeta m = stack.getItemMeta();
 		if(!m.hasLore()){
-			String description = getDescription();
-			if(description != null){
-				List<String> lore = AbstractItem.wordWrap(description,45);
-				m.setLore(lore);
-			}
+			m.setLore(new WordWrapper(description).wrap(45));
 		}
 		stack.setItemMeta(m);
 	}
@@ -46,15 +41,38 @@ public class ShopItem extends AbstractItem{
 
 	@Override
 	public boolean select(Player viewer,ClickType clickType){
+		boolean result;
 		if(clickType == ClickType.LEFT){
-			viewer.sendMessage("Buy " + priceBuy);
+			result = buySingle(viewer);
 		}else if(clickType == ClickType.RIGHT){
-			viewer.sendMessage("Sell " + priceSell);
+			result = sellSingle(viewer);
 		}else if(clickType == ClickType.SHIFT_LEFT){
-			viewer.sendMessage("Bulk Buy " + priceBuy);
+			result = buyBulk(viewer);
 		}else if(clickType == ClickType.SHIFT_RIGHT){
-			viewer.sendMessage("Bulk Sell " + priceSell);
+			result = sellBulk(viewer);
+		}else{
+			result = false;
 		}
-		return false; //todo
+		return result;
+	}
+
+	protected boolean buySingle(Player p){
+		p.sendMessage("Buy " + priceBuy);
+		return true;
+	}
+
+	protected boolean buyBulk(Player p){
+		p.sendMessage("Bulk Buy " + priceBuy);
+		return true;
+	}
+
+	protected boolean sellSingle(Player p){
+		p.sendMessage("Sell " + priceSell);
+		return true;
+	}
+
+	protected boolean sellBulk(Player p){
+		p.sendMessage("Bulk Sell " + priceSell);
+		return true;
 	}
 }

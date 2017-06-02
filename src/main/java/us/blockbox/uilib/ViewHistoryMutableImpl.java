@@ -5,14 +5,14 @@ import us.blockbox.uilib.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-class ViewHistoryMutableImpl implements ViewHistoryMutable{
+public class ViewHistoryMutableImpl implements ViewHistoryMutable{
 	private final List<View> views;
 
-	ViewHistoryMutableImpl(){
+	public ViewHistoryMutableImpl(){
 		views = new ArrayList<>();
 	}
 
-	ViewHistoryMutableImpl(List<View> views){
+	public ViewHistoryMutableImpl(List<View> views){
 		this.views = views;
 	}
 

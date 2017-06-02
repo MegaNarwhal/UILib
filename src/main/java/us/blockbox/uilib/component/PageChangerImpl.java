@@ -18,35 +18,22 @@ public class PageChangerImpl implements PageChanger{
 	private View link;
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack){
-		this.name = name;
-		this.id = id;
-		this.description = description;
-		this.stack = stack;
-		onClick = null;
+		this(name,id,description,stack,null,null);
 	}
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack,View link){
-		this.name = name;
-		this.id = id;
-		this.description = description;
-		this.stack = stack;
-		this.link = link;
-		onClick = null;
+		this(name,id,description,stack,null,link);
 	}
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack,Consumer<Player> onClick){
-		this.name = name;
-		this.id = id;
-		this.description = description;
-		this.stack = stack;
-		this.onClick = onClick;
+		this(name,id,description,stack,onClick,null);
 	}
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack,Consumer<Player> onClick,View link){
 		this.name = name;
 		this.id = id;
 		this.description = description;
-		this.stack = stack;
+		this.stack = stack.clone();
 		this.onClick = onClick;
 		this.link = link;
 	}
@@ -77,7 +64,7 @@ public class PageChangerImpl implements PageChanger{
 		if(onClick != null){
 			onClick.accept(viewer);
 		}
-		viewManager.setView(viewer,link,true);
+		viewManager.setView(viewer,link,true,true);//todo test
 		return true;
 	}
 
