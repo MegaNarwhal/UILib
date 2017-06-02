@@ -16,6 +16,7 @@ import us.blockbox.uilib.view.View;
 
 import java.util.UUID;
 
+
 public class CategoryTest{
 	@Before
 	public void setUp() throws Exception{

@@ -9,7 +9,7 @@ import us.blockbox.uilib.ViewManager;
 import us.blockbox.uilib.view.View;
 
 public class PageChangerImpl implements PageChanger{
-	private final ViewManager viewManager = UIPlugin.getViewManager();
+	private static final ViewManager viewManager = UIPlugin.getViewManager();
 	private final String name;
 	private final String id;
 	private final String description;

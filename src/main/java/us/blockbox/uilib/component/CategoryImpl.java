@@ -8,7 +8,7 @@ import us.blockbox.uilib.ViewManager;
 import us.blockbox.uilib.view.View;
 
 public class CategoryImpl implements Category{
-	private final ViewManager viewManager = UIPlugin.getViewManager();
+	private static final ViewManager viewManager = UIPlugin.getViewManager();//todo static
 	private final String name;
 	private final String id;
 	private final String description;
