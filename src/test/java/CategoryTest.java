@@ -31,6 +31,7 @@ public class CategoryTest{
 
 	@Test
 	public void testCategory(){
+		System.out.println("TESTING CATEGORY");
 		Component[] components = new Component[0];
 		View subView = InventoryView.create("Subview",components);
 		Category c = new CategoryImpl("Test","test",null,new ItemStack(Material.GOLD_INGOT),subView);
