@@ -16,8 +16,6 @@ import us.blockbox.uilib.view.View;
 
 import java.util.UUID;
 
-import static org.junit.Assert.fail;
-
 public class CategoryTest{
 	@Before
 	public void setUp() throws Exception{
@@ -40,10 +38,6 @@ public class CategoryTest{
 		Assert.assertNotNull(viewManager);
 		View current = viewManager.getView(p);
 		Assert.assertNull(current);
-		ClickType type = ClickType.LEFT;
-		if(type == ClickType.RIGHT){
-			fail("This will never happen");
-		}
 		Assert.assertTrue(c.select(p,ClickType.LEFT));
 		View category = viewManager.getView(p);
 		Assert.assertEquals(subView,category);

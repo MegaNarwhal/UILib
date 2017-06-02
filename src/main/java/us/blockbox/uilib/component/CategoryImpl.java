@@ -25,6 +25,7 @@ public class CategoryImpl implements Category{
 
 	@Override
 	public boolean select(Player viewer,ClickType clickType){
+		System.out.println(viewManager);
 		return viewManager.descendView(viewer,viewSub);
 	}
 
