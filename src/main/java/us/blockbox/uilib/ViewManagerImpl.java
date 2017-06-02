@@ -116,7 +116,8 @@ public class ViewManagerImpl implements ViewManager{
 	 * @return The Player's current view.
 	 * @see #closeView(Player)
 	 */
-	View exit(Player p){
+	@Override
+	public View exit(Player p){
 		UUID uuid = p.getUniqueId();
 		ViewHistory remove = viewMap.remove(uuid);
 		removeIgnore(uuid);

@@ -43,6 +43,8 @@ public interface ViewManager{
 	 */
 	View setView(Player p,View v,boolean ignoreNext,boolean preserveHistory);
 
+	View exit(Player p);
+
 	/**
 	 * Open a new {@link View}, appending it to the head of the Player's {@link ViewHistory}.
 	 *

@@ -23,9 +23,9 @@ import java.util.Set;
 public class InventoryListener implements Listener{
 
 	private final UIPlugin plugin;
-	private final ViewManagerImpl viewManager;
+	private final ViewManager viewManager;
 
-	public InventoryListener(UIPlugin plugin,ViewManagerImpl viewManager){
+	public InventoryListener(UIPlugin plugin,ViewManager viewManager){
 		this.plugin = plugin;
 		this.viewManager = viewManager;
 	}

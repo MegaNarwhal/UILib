@@ -4,16 +4,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import us.blockbox.uilib.UIPlugin;
-import us.blockbox.uilib.view.View;
 import us.blockbox.uilib.ViewManager;
+import us.blockbox.uilib.view.View;
 
 public class CategoryImpl implements Category{
 	private static final ViewManager viewManager = UIPlugin.getViewManager();
-	private String name;
-	private String id;
-	private String description;
-	private ItemStack stack;
-	private View viewSub;
+	private final String name;
+	private final String id;
+	private final String description;
+	private final ItemStack stack;
+	private final View viewSub;
 
 	public CategoryImpl(String name,String id,String description,ItemStack stack,View viewSub){
 		this.name = name;

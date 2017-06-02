@@ -12,7 +12,7 @@ class MockViewManager implements ViewManager{
 
 	@Override
 	public View getView(Player p){
-		return null;
+		return getView(p.getUniqueId());
 	}
 
 	@Override
@@ -33,36 +33,63 @@ class MockViewManager implements ViewManager{
 
 	@Override
 	public Set<UUID> getViewers(String name){
-		return null;
+		Set<UUID> viewers = new HashSet<>(getInitialCapacity());
+		for(Map.Entry<UUID,ViewHistoryMutable> e : viewMap.entrySet()){
+			View current = e.getValue().current();
+			if(current != null && current.getName().equals(name)){
+				viewers.add(e.getKey());
+			}
+		}
+		return viewers;
+	}
+
+	private int getInitialCapacity(){
+		return Math.max(16,viewMap.size() / 2);
 	}
 
 	@Override
 	public Set<UUID> getViewers(View view){
-		return null;
+		Set<UUID> viewers = new HashSet<>(getInitialCapacity());
+		for(Map.Entry<UUID,ViewHistoryMutable> e : viewMap.entrySet()){
+			if(e.getValue().current().equals(view)){
+				viewers.add(e.getKey());
+			}
+		}
+		return viewers;
 	}
 
 	@Override
 	public View setView(Player p,View v){
-		UUID uuid = p.getUniqueId();
-		ViewHistoryMutable put;
-		put = viewMap.put(uuid,new ViewHistoryMutableImpl(new ArrayList<>(Collections.singletonList(v))));
-		View prev;
-		if(put == null){
-			prev = null;
-		}else{
-			prev = put.current();
-		}
-		return prev;
+		return setView(p,v,false);
 	}
 
 	@Override
 	public View setView(Player p,View v,boolean ignoreNext){
-		return null;
+		return setView(p,v,ignoreNext,false);
 	}
 
 	@Override
 	public View setView(Player p,View v,boolean ignoreNext,boolean preserveHistory){
-		return null;
+		UUID uuid = p.getUniqueId();
+		ViewHistoryMutable put;
+		if(preserveHistory){
+			put = viewMap.get(uuid);
+		}else{
+			put = viewMap.put(uuid,new ViewHistoryMutableImpl(new ArrayList<>(Collections.singletonList(v))));
+		}
+		View prev;
+		if(put == null){
+			prev = null;
+			if(preserveHistory){
+				viewMap.put(uuid,new ViewHistoryMutableImpl(new ArrayList<>(Collections.singletonList(v))));
+			}
+		}else{
+			prev = put.current();
+			if(preserveHistory){
+				put.setCurrent(v);
+			}
+		}
+		return prev;
 	}
 
 	@Override
@@ -119,5 +146,10 @@ class MockViewManager implements ViewManager{
 			return value;
 		}
 		return h;
+	}
+
+	@Override
+	public View exit(Player p){
+		return null;
 	}
 }
