@@ -19,19 +19,16 @@ import java.util.UUID;
 public class CategoryTest{
 	@Before
 	public void setUp() throws Exception{
-		System.out.println("CATEGORY SETUP");
 		ViewManagerFactory.setInstance(new MockViewManager());
 	}
 
 	@After
 	public void tearDown() throws Exception{
-		System.out.println("CATEGORY TEARDOWN");
 		ViewManagerFactory.setInstance(null);
 	}
 
 	@Test
 	public void testCategory(){
-		System.out.println("TESTING CATEGORY");
 		Component[] components = new Component[0];
 		View subView = InventoryView.create("Subview",components);
 		Category c = new CategoryImpl("Test","test",null,new ItemStack(Material.GOLD_INGOT),subView);

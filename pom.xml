@@ -37,7 +37,7 @@
     </repositories>
     <build>
         <finalName>${project.artifactId}</finalName>
-        <defaultGoal>clean test package install</defaultGoal>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

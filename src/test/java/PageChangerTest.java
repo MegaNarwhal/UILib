@@ -22,13 +22,11 @@ import static org.junit.Assert.*;
 public class PageChangerTest{
 	@Before
 	public void setUp() throws Exception{
-		System.out.println("PAGECHANGER SETUP");
 		ViewManagerFactory.setInstance(new MockViewManager());
 	}
 
 	@After
 	public void tearDown() throws Exception{
-		System.out.println("PAGECHANGER TEARDOWN");
 		ViewManagerFactory.setInstance(null);
 	}
 
@@ -37,7 +35,7 @@ public class PageChangerTest{
 	 */
 	@Test
 	public void testSubviewPagination(){
-		int expectedPages = 2;
+		int expectedPages = 5;
 		int expectedTraversals = (expectedPages * 2) - 2;
 		int componentSize = (expectedPages) * 9;
 		Component[] components = new Component[componentSize];
