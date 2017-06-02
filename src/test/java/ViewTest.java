@@ -1,8 +1,11 @@
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import us.blockbox.uilib.ViewManager;
+import us.blockbox.uilib.ViewManagerFactory;
 import us.blockbox.uilib.component.*;
 import us.blockbox.uilib.view.InventoryView;
 import us.blockbox.uilib.view.View;
@@ -15,6 +18,16 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 public class ViewTest{
+
+	@Before
+	public void setUp() throws Exception{
+		ViewManagerFactory.setInstance(new MockViewManager());
+	}
+
+	@After
+	public void tearDown() throws Exception{
+		ViewManagerFactory.setInstance(null);
+	}
 
 	@Test
 	public void testGetViewers(){
