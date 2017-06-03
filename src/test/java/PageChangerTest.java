@@ -33,8 +33,7 @@ public class PageChangerTest{
 			components[i] = new FillerItem("dummy","dummy",null,stack);
 		}
 		View superView = InventoryView.create("Superview",components);
-		UUID uuid = UUID.randomUUID();
-		Player p = new MockPlayer(uuid);
+		Player p = new MockPlayer(UUID.randomUUID());
 		final ViewManager viewManager = new MockViewManager();
 		viewManager.setView(p,superView);
 		Material pageChangerType = Material.STONE;
@@ -54,7 +53,7 @@ public class PageChangerTest{
 		viewManager.descendView(p,paginated);
 		View view = viewManager.getView(p);
 		assertNotNull(view);
-		assertEquals(view,paginated);
+		assertEquals(paginated,view);
 		Collection<View> visited = new HashSet<>(expectedPages);
 		visited.add(view);
 		int traversals = 0;
@@ -66,9 +65,8 @@ public class PageChangerTest{
 				if(item instanceof PageChanger){
 					View link = ((PageChanger)item).getLink();
 					assertNotNull(link);
-					if(!visited.contains(link)){
+					if(visited.add(link)){
 						assertTrue(item.select(p,ClickType.LEFT));
-						visited.add(link);
 						view = viewManager.getView(p);
 						traversals++;
 						foundSomething = true;

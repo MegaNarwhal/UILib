@@ -35,8 +35,7 @@ public class ViewHistoryMutableImpl implements ViewHistoryMutable{
 		if(views.isEmpty()){
 			return null;
 		}
-		views.remove(size() - 1);
-		return current();
+		return views.remove(size() - 1);
 	}
 
 	@Override

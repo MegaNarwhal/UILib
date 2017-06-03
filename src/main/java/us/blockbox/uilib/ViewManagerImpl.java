@@ -191,12 +191,13 @@ public class ViewManagerImpl implements ViewManager{
 			closeView(p);
 			return false;
 		}else{
-			View back = h.back();
+			h.back();
+			View viewNew = h.current();
 			//openView causes an InventoryCloseEvent that should be ignored in cases of a player clicking in the gui
 			if(ignoreNext){
 				ignoreNextClose(uuid);
 			}
-			openView(p,back);
+			openView(p,viewNew);
 			return true;
 		}
 	}
