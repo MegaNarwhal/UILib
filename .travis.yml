@@ -1,5 +1,5 @@
 language: java
 cache:
   directories:
-- $HOME/.m2
+  - $HOME/.m2
 script: mvn test -B -V -e
