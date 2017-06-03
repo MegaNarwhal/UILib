@@ -40,6 +40,10 @@ public class ViewHistoryMutableImpl implements ViewHistoryMutable{
 
 	@Override
 	public View setCurrent(View view){
+		if(views.isEmpty()){
+			views.add(view);
+			return null;
+		}
 		return views.set(size() - 1,view);
 	}
 
