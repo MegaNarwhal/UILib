@@ -22,7 +22,7 @@ public class WordWrapperTest{
 				Assert.assertTrue(s1.length() <= lineMaxLength1);
 				sb.append(s1);
 			}
-			String reconstructed = spaces.matcher(sb.toString()).replaceAll("");//todo
+			String reconstructed = spaces.matcher(sb.toString()).replaceAll("");
 			Assert.assertEquals(spaces.matcher(s).replaceAll(""),reconstructed);
 		}
 

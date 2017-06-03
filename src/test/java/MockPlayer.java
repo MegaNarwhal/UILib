@@ -24,6 +24,19 @@ import java.util.*;
 class MockPlayer implements Player{
 	private final UUID uuid;
 
+	static List<Player> getRandom(int count){
+		Set<UUID> uuids = new HashSet<>(count);
+		while(uuids.size() < count){
+			UUID random = UUID.randomUUID();
+			uuids.add(random);
+		}
+		List<Player> players = new ArrayList<>(count);
+		for(UUID uuid1 : uuids){
+			players.add(new MockPlayer(uuid1));
+		}
+		return players;
+	}
+
 	MockPlayer(UUID uuid){
 		this.uuid = uuid;
 	}

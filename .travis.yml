@@ -1,4 +1,5 @@
 language: java
-after_failure:
-  - cat target/surefire-reports/*.txt
+cache:
+  directories:
+- $HOME/.m2
 script: mvn test -B -V -e

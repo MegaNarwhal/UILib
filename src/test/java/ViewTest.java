@@ -1,16 +1,17 @@
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import us.blockbox.uilib.PageChangerFactory;
 import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.ViewManagerFactory;
-import us.blockbox.uilib.component.*;
+import us.blockbox.uilib.ViewPaginatorImpl;
+import us.blockbox.uilib.component.Category;
+import us.blockbox.uilib.component.Component;
+import us.blockbox.uilib.component.FillerItem;
+import us.blockbox.uilib.component.PageChanger;
 import us.blockbox.uilib.view.InventoryView;
 import us.blockbox.uilib.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -18,30 +19,13 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 public class ViewTest{
-
-	@Before
-	public void setUp() throws Exception{
-		ViewManagerFactory.setInstance(new MockViewManager());
-	}
-
-	@After
-	public void tearDown() throws Exception{
-		ViewManagerFactory.setInstance(null);
-	}
-
 	@Test
 	public void testGetViewers(){
 		ViewManager viewManager = new MockViewManager();
-		List<UUID> uuids = new ArrayList<>();
-		while(uuids.size() < 3){
-			UUID random = UUID.randomUUID();
-			if(!uuids.contains(random)){
-				uuids.add(random);
-			}
-		}
-		Player p1 = new MockPlayer(uuids.get(0));
-		Player p2 = new MockPlayer(uuids.get(1));
-		Player p3 = new MockPlayer(uuids.get(2));
+		List<Player> players = MockPlayer.getRandom(3);
+		Player p1 = players.get(0);
+		Player p2 = players.get(1);
+		Player p3 = players.get(2);
 		View view = InventoryView.create("Test",new Component[9]);
 		View view2 = InventoryView.create("Test",new Component[10]);
 		viewManager.setView(p1,view);
@@ -65,8 +49,20 @@ public class ViewTest{
 			components[i] = new FillerItem("dummy","dummy",null,stack);
 		}
 		Material pageChangerType = Material.STONE;
-		ItemStack selector = new ItemStack(pageChangerType);
-		View v = InventoryView.createPaginated("Test View",components,1,selector,selector);
+		final ItemStack selector = new ItemStack(pageChangerType);
+		final ViewManager viewManager = new MockViewManager();
+		PageChangerFactory pageChangerFactory = new PageChangerFactory(){
+			@Override
+			public PageChanger createNext(int page){
+				return new MockPageChangerImpl(viewManager,"Previous","previous",null,selector,null);
+			}
+
+			@Override
+			public PageChanger createPrevious(int page){
+				return new MockPageChangerImpl(viewManager,"Next","next",null,selector,null);
+			}
+		};//todo create class
+		View v = new ViewPaginatorImpl("Test View",components,1,pageChangerFactory).paginate().get(0);
 		int page = 0;
 		while(true){
 			int index = v.size() - 1;
@@ -85,9 +81,7 @@ public class ViewTest{
 				break;
 			}
 		}
-		if(page != 2){
-			fail("Incorrect page count!");
-		}
+		assertEquals(2,page);
 	}
 
 	@Test
@@ -99,10 +93,10 @@ public class ViewTest{
 		for(int i = 0; i < subc.length; i++){
 			subc[i] = fillerItem;
 		}
-		View sub = InventoryView.create("Paginated View",subc);
-		Category cat = new CategoryImpl("Sub","sub",null,new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5),sub);
+		View sub = InventoryView.create("Subview",subc);
+		Category cat = new MockCategoryImpl(viewManager,"Sub","sub",null,new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5),sub);
 		Component[] superc = new Component[]{filler,cat,filler};
-		View superv = InventoryView.create("Super",superc);
+		View superv = InventoryView.create("Superview",superc);
 		UUID uuid = UUID.randomUUID();
 		Player p = new MockPlayer(uuid);
 		viewManager.setView(p,superv);
@@ -129,5 +123,4 @@ public class ViewTest{
 			}
 		}
 	}
-
 }

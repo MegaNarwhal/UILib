@@ -8,8 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
-import us.blockbox.uilib.ItemBuilder;
+import us.blockbox.uilib.*;
 import us.blockbox.uilib.component.Component;
 import us.blockbox.uilib.component.PageChanger;
 import us.blockbox.uilib.component.PageChangerImpl;
@@ -52,6 +51,19 @@ public class InventoryView implements View{
 	}
 
 	public static View createPaginated(String name,Component[] components,int pageRows,ItemStack prevSelector,ItemStack nextSelector){
+		Consumer<Player> onClick = new Consumer<Player>(){
+			@Override
+			public void accept(Player player){
+				player.playSound(player.getLocation(),Sound.UI_BUTTON_CLICK,4,1);
+			}
+		};
+		PageChangerFactory pageChangerFactory = new PageChangerImplFactory(prevSelector,nextSelector,onClick);
+		ViewPaginator paginator = new ViewPaginatorImpl(name,components,pageRows,pageChangerFactory);
+		return paginator.paginate().get(0);
+	}
+
+	@Deprecated
+	public static View createPaginatedOld(String name,Component[] components,int pageRows,ItemStack prevSelector,ItemStack nextSelector){
 		int pageSize = pageRows * 9;
 		int pages = (int)Math.ceil(components.length / ((double)pageSize));
 		if(pages == 1){

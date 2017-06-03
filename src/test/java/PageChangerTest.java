@@ -2,11 +2,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import us.blockbox.uilib.PageChangerFactory;
 import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.ViewManagerFactory;
+import us.blockbox.uilib.ViewPaginatorImpl;
 import us.blockbox.uilib.component.Component;
 import us.blockbox.uilib.component.FillerItem;
 import us.blockbox.uilib.component.PageChanger;
@@ -20,16 +19,6 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 public class PageChangerTest{
-	@Before
-	public void setUp() throws Exception{
-		ViewManagerFactory.setInstance(new MockViewManager());
-	}
-
-	@After
-	public void tearDown() throws Exception{
-		ViewManagerFactory.setInstance(null);
-	}
-
 	/**
 	 * Test pagination of a View under a superview.
 	 */
@@ -44,13 +33,24 @@ public class PageChangerTest{
 			components[i] = new FillerItem("dummy","dummy",null,stack);
 		}
 		View superView = InventoryView.create("Superview",components);
-		ViewManager viewManager = ViewManagerFactory.getInstance();
 		UUID uuid = UUID.randomUUID();
 		Player p = new MockPlayer(uuid);
+		final ViewManager viewManager = new MockViewManager();
 		viewManager.setView(p,superView);
 		Material pageChangerType = Material.STONE;
-		ItemStack selector = new ItemStack(pageChangerType);
-		View paginated = InventoryView.createPaginated("Test View",components,1,selector,selector);
+		final ItemStack selector = new ItemStack(pageChangerType);
+		PageChangerFactory pageChangerFactory = new PageChangerFactory(){
+			@Override
+			public PageChanger createNext(int page){
+				return new MockPageChangerImpl(viewManager,"Previous","previous",null,selector,null);
+			}
+
+			@Override
+			public PageChanger createPrevious(int page){
+				return new MockPageChangerImpl(viewManager,"Next","next",null,selector,null);
+			}
+		};
+		View paginated = new ViewPaginatorImpl("Test View",components,1,pageChangerFactory).paginate().get(0);
 		viewManager.descendView(p,paginated);
 		View view = viewManager.getView(p);
 		assertNotNull(view);

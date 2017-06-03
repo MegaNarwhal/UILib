@@ -37,7 +37,7 @@
     </repositories>
     <build>
         <finalName>${project.artifactId}</finalName>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>clean package install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,16 +55,9 @@
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
-                    <reuseForks>false</reuseForks>
+                    <reuseForks>true</reuseForks>
                     <trimStackTrace>false</trimStackTrace>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.20</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
         <resources>
