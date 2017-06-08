@@ -21,6 +21,32 @@ public class TestViewCommand implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender,Command command,String label,String[] args){
 		if(!sender.isOp()) return true;
+		////Create the icon for the dirt giving component
+		//ItemStack giveDirtIcon = new ItemBuilder(new ItemStack(Material.COMMAND))
+		//		.name(ChatColor.GREEN + "Free Dirt!")
+		//		.build();
+		////Create the component that runs our give command
+		//Component giveDirt = new ConsoleCommandItem("Command","cmd",giveDirtIcon,"give %s dirt 10");
+		////Create a close button
+		//Component closeButton = new CloseButtonItem(
+		//		"Close",
+		//		"close",
+		//		null,
+		//		new ItemBuilder(new ItemStack(Material.BARRIER))
+		//				.name("Close")
+		//				.build()
+		//);
+		////Center the close button in our subview
+		//View subView = InventoryView.createCentered(ChatColor.DARK_PURPLE + "Centered Subview!",new Component[]{closeButton});
+		////Create a category component that links to our subview
+		//Category categoryItem = new CategoryImpl("Subview","subview",null,new ItemStack(Material.GOLD_BLOCK),subView);
+		////Put the components for the main view in an array
+		//Component[] components = new Component[]{giveDirt,categoryItem};
+		////Create the main view with 2 components
+		//View superView = InventoryView.create("Main View",components);
+		////Set the player's view to the main view, opening it on their screen
+		//UIPlugin.getViewManager().setView(((Player)sender),superView);
+
 		Item filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
 //		Item shopItem = new ShopItem("Test ShopItem","test1",ipsum,new ItemStack(Material.DIAMOND_PICKAXE),10.0,1.0);
 		CloseButtonItem close = new CloseButtonItem("Close","close",new ItemBuilder(
@@ -33,12 +59,10 @@ public class TestViewCommand implements CommandExecutor{
 		}
 		subc[subc.length - 1] = close;//
 		View sub = InventoryView.createPaginated("Paginated View",subc,1);
-//		View sub = InventoryView.padVertically("Sub",1,subc);
 		Category cat = new CategoryImpl("Sub","sub",null,new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)5),sub);
-		Component[] superc = new Component[]{filler,cat,close,new CommandItem("Command","cmd",new ItemStack(Material.COMMAND),"tp 0 70 0"),filler};
+		Component[] superc = new Component[]{filler,cat,close,new ConsoleCommandItem("Command","cmd",new ItemStack(Material.COMMAND),"give %s dirt 10"),filler};
 		View superv = InventoryView.createCentered("Super",superc);
 		viewManager.setView(((Player)sender),superv);
-//		viewManager.descendView(((Player)sender),superv);
 		return true;
 	}
 }
