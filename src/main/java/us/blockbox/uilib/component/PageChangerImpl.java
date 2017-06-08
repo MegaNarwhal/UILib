@@ -8,13 +8,8 @@ import us.blockbox.uilib.UIPlugin;
 import us.blockbox.uilib.ViewManager;
 import us.blockbox.uilib.view.View;
 
-public class PageChangerImpl implements PageChanger{
+public final class PageChangerImpl extends AbstractItem implements PageChanger{
 	private static final ViewManager viewManager = UIPlugin.getViewManager();
-	private final String name;
-	private final String id;
-	private final String description;
-	private final ItemStack stack;
-	private final Consumer<Player> onClick;
 	private View link;
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack){
@@ -30,32 +25,8 @@ public class PageChangerImpl implements PageChanger{
 	}
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack,Consumer<Player> onClick,View link){
-		this.name = name;
-		this.id = id;
-		this.description = description;
-		this.stack = stack.clone();
-		this.onClick = onClick;
+		super(name,id,description,stack,onClick);
 		this.link = link;
-	}
-
-	@Override
-	public String getId(){
-		return id;
-	}
-
-	@Override
-	public String getName(){
-		return name;
-	}
-
-	@Override
-	public String getDescription(){
-		return description;
-	}
-
-	@Override
-	public ItemStack getItemStack(){
-		return stack.clone();
 	}
 
 	@Override
