@@ -33,7 +33,7 @@ public class PageChangerTest{
 			components[i] = new FillerItem("dummy","dummy",null,stack);
 		}
 		View superView = InventoryView.create("Superview",components);
-		Player p = new MockPlayer(UUID.randomUUID());
+		Player p = MockPlayerFactory.create(UUID.randomUUID());
 		final ViewManager viewManager = new MockViewManager();
 		viewManager.setView(p,superView);
 		Material pageChangerType = Material.STONE;

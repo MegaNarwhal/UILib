@@ -22,7 +22,7 @@ public class ViewTest{
 	@Test
 	public void testGetViewers(){
 		ViewManager viewManager = new MockViewManager();
-		List<Player> players = MockPlayer.getRandom(3);
+		List<Player> players = MockPlayerFactory.getRandom(3);
 		Player p1 = players.get(0);
 		Player p2 = players.get(1);
 		Player p3 = players.get(2);
@@ -98,7 +98,7 @@ public class ViewTest{
 		Component[] superc = new Component[]{filler,cat,filler};
 		View superv = InventoryView.create("Superview",superc);
 		UUID uuid = UUID.randomUUID();
-		Player p = new MockPlayer(uuid);
+		Player p = MockPlayerFactory.create(uuid);
 		viewManager.setView(p,superv);
 		View view = viewManager.getView(uuid);
 		if(view != superv){

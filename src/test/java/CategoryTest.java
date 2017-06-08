@@ -20,9 +20,7 @@ public class CategoryTest{
 		Component[] components = new Component[0];
 		View subView = InventoryView.create("Subview",components);
 		Category c = new MockCategoryImpl(viewManager,"Test","test",null,new ItemStack(Material.GOLD_INGOT),subView);
-		UUID uuid = UUID.randomUUID();
-		Player p = new MockPlayer(uuid);
-		assertNotNull(viewManager);
+		Player p = MockPlayerFactory.create(UUID.randomUUID());
 		View current = viewManager.getView(p);
 		assertNull(current);
 		assertTrue(c.select(p,ClickType.LEFT));

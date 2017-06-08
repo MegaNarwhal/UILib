@@ -5,8 +5,7 @@ import us.blockbox.uilib.component.Component;
 import us.blockbox.uilib.view.InventoryView;
 import us.blockbox.uilib.view.View;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class ViewHistoryTest{
 	@Test
@@ -19,16 +18,16 @@ public class ViewHistoryTest{
 		h.add(first);
 		h.add(second);
 		h.add(third);
-		assertEquals(3,h.size());
-		assertEquals(second,h.getPrevious());
-		assertEquals(third,h.back());
-		assertEquals(2,h.size());
-		assertEquals(first,h.getPrevious());
-		assertEquals(second,h.back());
-		assertEquals(first,h.back());
-		assertNull(h.back());
-		assertEquals(0,h.size());
-		assertNull(h.setCurrent(second));
-		assertEquals(second,h.setCurrent(third));
+		assertEquals(3,h.size());//3 elements
+		assertSame(second,h.getPrevious());//second is before third
+		assertSame(third,h.back());//removed third
+		assertEquals(2,h.size());//removed one, 2 left
+		assertSame(first,h.getPrevious());//before second is first
+		assertSame(second,h.back());//going back to second
+		assertSame(first,h.back());//going back to first
+		assertNull(h.back());//nothing left
+		assertEquals(0,h.size());//empty
+		assertNull(h.setCurrent(second));//is empty so not replacing anything
+		assertSame(second,h.setCurrent(third));
 	}
 }
