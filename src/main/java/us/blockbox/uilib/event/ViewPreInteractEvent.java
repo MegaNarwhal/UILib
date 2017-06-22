@@ -2,7 +2,7 @@ package us.blockbox.uilib.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.View;
 
 public class ViewPreInteractEvent extends ViewEvent implements Cancellable{
 	private boolean cancelled;

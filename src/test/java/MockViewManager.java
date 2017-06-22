@@ -1,9 +1,9 @@
 import org.bukkit.entity.Player;
-import us.blockbox.uilib.ViewHistory;
-import us.blockbox.uilib.ViewHistoryMutable;
-import us.blockbox.uilib.ViewHistoryMutableImpl;
-import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewHistory;
+import us.blockbox.uilib.api.ViewHistoryMutable;
+import us.blockbox.uilib.api.ViewManager;
+import us.blockbox.uilib.viewmanager.ViewHistoryMutableImpl;
 
 import java.util.*;
 

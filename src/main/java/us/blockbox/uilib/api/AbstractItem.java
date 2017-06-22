@@ -1,10 +1,9 @@
-package us.blockbox.uilib.component;
+package us.blockbox.uilib.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
 
-public abstract class AbstractItem implements Item{
+public abstract class AbstractItem implements Component{
 	private final String name;
 	private final String id;
 	private final String description;

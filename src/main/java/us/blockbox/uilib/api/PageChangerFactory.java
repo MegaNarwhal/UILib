@@ -1,6 +1,4 @@
-package us.blockbox.uilib;
-
-import us.blockbox.uilib.component.PageChanger;
+package us.blockbox.uilib.api;
 
 public interface PageChangerFactory{
 	PageChanger createNext(int page);

@@ -4,7 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import us.blockbox.uilib.WordWrapper;
+import us.blockbox.uilib.api.AbstractItem;
+import us.blockbox.uilib.api.util.WordWrapper;
 
 public class ShopItem extends AbstractItem{
 	private final double priceBuy;

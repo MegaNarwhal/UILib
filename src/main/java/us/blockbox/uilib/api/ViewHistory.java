@@ -1,6 +1,4 @@
-package us.blockbox.uilib;
-
-import us.blockbox.uilib.view.View;
+package us.blockbox.uilib.api;
 
 /**
  * A history of the {@link View}s through which a viewer has navigated to reach their current {@link View}.

@@ -1,4 +1,4 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,16 +7,24 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.component.*;
+import us.blockbox.uilib.api.Category;
+import us.blockbox.uilib.api.Component;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewManager;
+import us.blockbox.uilib.api.util.ItemBuilder;
+import us.blockbox.uilib.component.CategoryImpl;
+import us.blockbox.uilib.component.CloseButtonItem;
+import us.blockbox.uilib.component.ConsoleCommandItem;
+import us.blockbox.uilib.component.FillerItem;
 import us.blockbox.uilib.view.InventoryView;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.viewmanager.ViewManagerFactory;
 
 import java.util.Random;
 
 public class TestViewCommand implements CommandExecutor{
 
-	private static final ViewManager viewManager = UIPlugin.getViewManager();
-	private static final String ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+	private static final ViewManager viewManager = ViewManagerFactory.getInstance();
+//	private static final String ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 	@Override
 	public boolean onCommand(CommandSender sender,Command command,String label,String[] args){
@@ -47,7 +55,7 @@ public class TestViewCommand implements CommandExecutor{
 		////Set the player's view to the main view, opening it on their screen
 		//UIPlugin.getViewManager().setView(((Player)sender),superView);
 
-		Item filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
+		Component filler = FillerItem.create(new ItemStack(Material.GOLD_BLOCK));
 //		Item shopItem = new ShopItem("Test ShopItem","test1",ipsum,new ItemStack(Material.DIAMOND_PICKAXE),10.0,1.0);
 		CloseButtonItem close = new CloseButtonItem("Close","close",new ItemBuilder(
 				new ItemStack(Material.STAINED_GLASS_PANE,1,(byte)1)

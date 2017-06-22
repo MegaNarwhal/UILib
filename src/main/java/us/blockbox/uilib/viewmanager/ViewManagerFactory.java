@@ -1,6 +1,8 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.viewmanager;
 
-public class ViewManagerFactory{
+import us.blockbox.uilib.api.ViewManager;
+
+public final class ViewManagerFactory{
 	private ViewManagerFactory(){
 	}
 

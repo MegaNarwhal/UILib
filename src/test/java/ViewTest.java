@@ -2,15 +2,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Test;
-import us.blockbox.uilib.PageChangerFactory;
-import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.ViewPaginatorImpl;
-import us.blockbox.uilib.component.Category;
-import us.blockbox.uilib.component.Component;
+import us.blockbox.uilib.api.*;
 import us.blockbox.uilib.component.FillerItem;
-import us.blockbox.uilib.component.PageChanger;
 import us.blockbox.uilib.view.InventoryView;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.view.ViewPaginatorImpl;
 
 import java.util.List;
 import java.util.Set;

@@ -3,13 +3,11 @@ package us.blockbox.uilib.component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
-import us.blockbox.uilib.UIPlugin;
-import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.*;
+import us.blockbox.uilib.viewmanager.ViewManagerFactory;
 
 public final class PageChangerImpl extends AbstractItem implements PageChanger{
-	private static final ViewManager viewManager = UIPlugin.getViewManager();
+	private static final ViewManager viewManager = ViewManagerFactory.getInstance();
 	private View link;
 
 	public PageChangerImpl(String name,String id,String description,ItemStack stack){

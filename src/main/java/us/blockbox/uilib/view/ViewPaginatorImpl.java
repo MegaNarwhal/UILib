@@ -1,9 +1,6 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.view;
 
-import us.blockbox.uilib.component.Component;
-import us.blockbox.uilib.component.PageChanger;
-import us.blockbox.uilib.view.InventoryView;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package us.blockbox.uilib.component;
+package us.blockbox.uilib.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

@@ -1,6 +1,7 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.viewmanager;
 
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewHistoryMutable;
 
 import java.util.ArrayList;
 import java.util.List;

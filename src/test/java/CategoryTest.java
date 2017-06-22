@@ -3,11 +3,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Test;
-import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.component.Category;
-import us.blockbox.uilib.component.Component;
+import us.blockbox.uilib.api.Category;
+import us.blockbox.uilib.api.Component;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewManager;
 import us.blockbox.uilib.view.InventoryView;
-import us.blockbox.uilib.view.View;
 
 import java.util.UUID;
 

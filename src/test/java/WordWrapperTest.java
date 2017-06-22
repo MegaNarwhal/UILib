@@ -1,6 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
-import us.blockbox.uilib.WordWrapper;
+import us.blockbox.uilib.api.util.WordWrapper;
 
 import java.util.List;
 import java.util.regex.Pattern;

@@ -3,6 +3,7 @@ package us.blockbox.uilib.component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import us.blockbox.uilib.api.AbstractItem;
 
 public class FillerItem extends AbstractItem{
 	private static final String FILLER = "filler";

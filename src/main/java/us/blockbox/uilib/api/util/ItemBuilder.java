@@ -1,4 +1,4 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.api.util;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;

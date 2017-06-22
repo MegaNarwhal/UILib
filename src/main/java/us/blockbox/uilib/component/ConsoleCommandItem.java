@@ -4,7 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
+import us.blockbox.uilib.api.AbstractItem;
+import us.blockbox.uilib.api.Consumer;
 
 /**
  * Runs a command as console. Replaces %s in the commandFormat string with the name of the viewer who selects it. For
@@ -30,7 +31,6 @@ public class ConsoleCommandItem extends AbstractItem{
 
 	@Override
 	public boolean select(Player viewer,ClickType clickType){
-
 		String command = String.format(commandFormat,viewer.getName());
 		return Bukkit.dispatchCommand(Bukkit.getConsoleSender(),command);
 	}

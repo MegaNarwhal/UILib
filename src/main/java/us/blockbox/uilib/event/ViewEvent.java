@@ -3,7 +3,7 @@ package us.blockbox.uilib.event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.View;
 
 /**
  * Abstract base class for events involving Views.

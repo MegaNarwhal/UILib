@@ -1,7 +1,7 @@
 package us.blockbox.uilib.event;
 
 import org.bukkit.entity.Player;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.View;
 
 /**
  * This Event is called when a Player's {@link View} changes as a result of a click.

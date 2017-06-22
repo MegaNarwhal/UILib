@@ -8,10 +8,10 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.*;
-import us.blockbox.uilib.component.Component;
-import us.blockbox.uilib.component.PageChanger;
+import us.blockbox.uilib.api.*;
+import us.blockbox.uilib.api.util.ItemBuilder;
 import us.blockbox.uilib.component.PageChangerImpl;
+import us.blockbox.uilib.component.PageChangerImplFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -189,7 +189,7 @@ public class InventoryView implements View{
 
 	@Override
 	public Inventory asInventory(){
-		Inventory inv = Bukkit.createInventory(null,size(),getName());
+		Inventory inv = Bukkit.createInventory(null,size(),name);
 		inv.setContents(asContents());
 		return inv;
 	}

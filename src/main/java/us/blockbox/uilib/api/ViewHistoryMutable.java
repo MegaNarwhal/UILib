@@ -1,6 +1,4 @@
-package us.blockbox.uilib;
-
-import us.blockbox.uilib.view.View;
+package us.blockbox.uilib.api;
 
 /**
  * A {@link ViewHistory} that can be modified.

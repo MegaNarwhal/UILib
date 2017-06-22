@@ -1,9 +1,9 @@
 import org.junit.Test;
-import us.blockbox.uilib.ViewHistoryMutable;
-import us.blockbox.uilib.ViewHistoryMutableImpl;
-import us.blockbox.uilib.component.Component;
+import us.blockbox.uilib.api.Component;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewHistoryMutable;
 import us.blockbox.uilib.view.InventoryView;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.viewmanager.ViewHistoryMutableImpl;
 
 import static org.junit.Assert.*;
 

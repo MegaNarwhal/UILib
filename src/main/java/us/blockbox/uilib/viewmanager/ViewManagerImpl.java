@@ -1,11 +1,14 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.viewmanager;
 
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewHistory;
+import us.blockbox.uilib.api.ViewHistoryMutable;
+import us.blockbox.uilib.api.ViewManager;
 import us.blockbox.uilib.event.ViewChangeEvent;
-import us.blockbox.uilib.view.View;
 
 import java.util.*;
 
@@ -18,7 +21,7 @@ public class ViewManagerImpl implements ViewManager{
 	private final JavaPlugin plugin;
 	private final Set<UUID> ignored = new HashSet<>();
 
-	ViewManagerImpl(JavaPlugin plugin){
+	public ViewManagerImpl(JavaPlugin plugin){
 		this.plugin = plugin;
 	}
 

@@ -1,11 +1,12 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.viewmanager;
 
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewHistory;
 
 class ViewHistoryImpl implements ViewHistory{
 	private final ViewHistory history;
 
-	public ViewHistoryImpl(ViewHistory history){
+	ViewHistoryImpl(ViewHistory history){
 		this.history = history;
 	}
 

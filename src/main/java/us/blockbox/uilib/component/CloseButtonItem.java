@@ -3,12 +3,13 @@ package us.blockbox.uilib.component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
-import us.blockbox.uilib.UIPlugin;
-import us.blockbox.uilib.ViewManager;
+import us.blockbox.uilib.api.AbstractItem;
+import us.blockbox.uilib.api.Consumer;
+import us.blockbox.uilib.api.ViewManager;
+import us.blockbox.uilib.viewmanager.ViewManagerFactory;
 
 public class CloseButtonItem extends AbstractItem{
-	private static final ViewManager viewManager = UIPlugin.getViewManager();
+	private static final ViewManager viewManager = ViewManagerFactory.getInstance();
 
 	public CloseButtonItem(String name,String id,String description,ItemStack stack,Consumer<Player> onClick){
 		super(name,id,description,stack,onClick);

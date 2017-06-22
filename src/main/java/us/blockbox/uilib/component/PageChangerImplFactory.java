@@ -1,9 +1,10 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.component;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.component.PageChanger;
-import us.blockbox.uilib.component.PageChangerImpl;
+import us.blockbox.uilib.api.Consumer;
+import us.blockbox.uilib.api.PageChanger;
+import us.blockbox.uilib.api.PageChangerFactory;
 
 public class PageChangerImplFactory implements PageChangerFactory{
 	private ItemStack previous;

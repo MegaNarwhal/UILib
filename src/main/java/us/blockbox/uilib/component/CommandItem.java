@@ -3,7 +3,8 @@ package us.blockbox.uilib.component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
+import us.blockbox.uilib.api.AbstractItem;
+import us.blockbox.uilib.api.Consumer;
 
 public class CommandItem extends AbstractItem{
 	private final String command;

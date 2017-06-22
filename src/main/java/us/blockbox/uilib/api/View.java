@@ -1,8 +1,7 @@
-package us.blockbox.uilib.view;
+package us.blockbox.uilib.api;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.component.Component;
 
 public interface View{
 	String getName();

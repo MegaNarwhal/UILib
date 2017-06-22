@@ -1,10 +1,10 @@
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import us.blockbox.uilib.Consumer;
-import us.blockbox.uilib.ViewManager;
-import us.blockbox.uilib.component.PageChanger;
-import us.blockbox.uilib.view.View;
+import us.blockbox.uilib.api.Consumer;
+import us.blockbox.uilib.api.PageChanger;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewManager;
 
 public class MockPageChangerImpl implements PageChanger{
 	private final ViewManager viewManager;

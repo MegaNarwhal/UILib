@@ -13,19 +13,21 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import us.blockbox.uilib.component.Component;
+import us.blockbox.uilib.api.Component;
+import us.blockbox.uilib.api.View;
+import us.blockbox.uilib.api.ViewManager;
 import us.blockbox.uilib.event.ViewPreInteractEvent;
-import us.blockbox.uilib.view.View;
 
 import java.util.Set;
 
 public class InventoryListener implements Listener{
 
-	private final UIPlugin plugin;
+	private final JavaPlugin plugin;
 	private final ViewManager viewManager;
 
-	public InventoryListener(UIPlugin plugin,ViewManager viewManager){
+	public InventoryListener(JavaPlugin plugin,ViewManager viewManager){
 		this.plugin = plugin;
 		this.viewManager = viewManager;
 	}
@@ -37,13 +39,13 @@ public class InventoryListener implements Listener{
 			return;
 		}
 		int raw = e.getRawSlot();
-		int ui = e.getView().getTopInventory().getSize();
+		int topSize = e.getView().getTopInventory().getSize();
 		Player p = (Player)e.getWhoClicked();
 		View view = viewManager.getView(p);
 		if(e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && view != null){
 			e.setCancelled(true);
 		}
-		if(!inView(raw,ui)){
+		if(!inView(raw,topSize)){
 			return;
 		}
 		if(view != null && isView(view,e.getInventory())){//todo handle in view itself?

@@ -1,7 +1,6 @@
-package us.blockbox.uilib;
+package us.blockbox.uilib.api;
 
 import org.bukkit.entity.Player;
-import us.blockbox.uilib.view.View;
 
 import java.util.Set;
 import java.util.UUID;
