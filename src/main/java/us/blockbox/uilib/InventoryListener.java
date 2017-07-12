@@ -1,6 +1,5 @@
 package us.blockbox.uilib;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,15 +20,17 @@ import us.blockbox.uilib.api.ViewManager;
 import us.blockbox.uilib.event.ViewPreInteractEvent;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class InventoryListener implements Listener{
-
 	private final JavaPlugin plugin;
 	private final ViewManager viewManager;
+	private final CooldownManager cooldownManager;
 
 	public InventoryListener(JavaPlugin plugin,ViewManager viewManager){
 		this.plugin = plugin;
 		this.viewManager = viewManager;
+		this.cooldownManager = new CooldownManager(plugin,3L);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -52,10 +53,14 @@ public class InventoryListener implements Listener{
 			e.setCancelled(true);
 			Component item = view.getItem(raw);
 			if(item != null){
-				ViewPreInteractEvent preInteract = new ViewPreInteractEvent(p,view,raw);
-				Bukkit.getPluginManager().callEvent(preInteract);
-				if(!preInteract.isCancelled()){
-					item.select(p,e.getClick());
+				UUID uuid = p.getUniqueId();
+				if(!cooldownManager.isCooling(uuid)){
+					ViewPreInteractEvent preInteract = new ViewPreInteractEvent(p,view,raw);
+					plugin.getServer().getPluginManager().callEvent(preInteract);
+					if(!preInteract.isCancelled()){
+						item.select(p,e.getClick());
+						cooldownManager.add(uuid);
+					}
 				}
 			}
 		}
